@@ -1,4 +1,4 @@
-# 🌌 Phy-AI Bridge: From Spin Networks to Neural Manifolds
+# Phy-AI Bridge: From Spin Networks to Neural Manifolds
 
 > **Author**: Yehia Said Gewily  
 > **Institution**: Alexandria University  
@@ -10,7 +10,7 @@ The goal is to move beyond "black box" deep learning by building AI architecture
 
 ---
 
-## 📌 Phase 1: Spin Equilibrium (The Ising Foundation)
+## Phase 1: Spin Equilibrium (The Ising Foundation)
 
 In this phase, we implemented a high-performance computational simulation of the **2D Ising Model**. This serves as the "Physical Baseline" for understanding Energy-Based Models (EBMs).
 
@@ -34,7 +34,7 @@ $$ H(\mathbf{\sigma}) = -J \sum_{\langle i,j \rangle} \sigma_i \sigma_j - B \sum
 
 Simulating large-scale statistical systems requires significant computational power. Standard iterative approaches ($O(N)$) are insufficient for real-time visualization.
 
-#### ⚡ Vectorized Checkerboard Decomposition
+#### Vectorized Checkerboard Decomposition
 
 To achieve a simulation speed of **60+ FPS** on a $256 \times 256$ grid (65,536 agents), we implemented a **Vectorized Metropolis-Hastings Algorithm** using NumPy.
 
@@ -77,7 +77,7 @@ $$ \chi = \frac{\text{Var}(M)}{T} $$
 
 ---
 
-## 📊 Visual Evidence
+## Visual Evidence
 
 The `results/` directory contains visual proof of the simulation's fidelity.
 
@@ -94,7 +94,7 @@ The `results/` directory contains visual proof of the simulation's fidelity.
 
 ---
 
-## 🚀 Future Work: Phase 2 - The Bridge (Hopfield Networks)
+## Future Work: Phase 2 - The Bridge (Hopfield Networks)
 
 The next stage of this research involves transitioning from **fixed physical constants** to **learnable parameters**.
 
@@ -105,7 +105,7 @@ This transformation will convert our Ising lattice into a functional **Hopfield 
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Core Physics**: Python 3.10+, NumPy (Vectorized Linear Algebra)
 * **Visualization**: Pygame (Surface Array Blitting), Matplotlib (Agg Backend for Real-time Plotting)
@@ -113,17 +113,3 @@ This transformation will convert our Ising lattice into a functional **Hopfield 
 * **Documentation**: LaTeX / Markdown
 
 ---
-
-## 📚 Citation
-
-If you use this work for research or academic purposes, please cite the attached Technical Report:
-
-```bibtex
-@techreport{gewily2025ising,
-  author = {Yehia Said Gewily},
-  title = {Computational Simulation of Critical Phenomena in the 2D Ising Model},
-  institution = {Alexandria University},
-  year = {2025},
-  note = {Phase 1: Spin-Equilibrium Implementation}
-}
-```
