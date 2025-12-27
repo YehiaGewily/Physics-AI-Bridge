@@ -105,6 +105,43 @@ This transformation will convert our Ising lattice into a functional **Hopfield 
 
 ---
 
+---
+
+## How to Run
+
+### 1. Setup Environment
+
+```bash
+# Create Virtual Environment
+python -m venv spin-equilibrium/venv
+
+# Activate (Windows)
+.\spin-equilibrium\venv\Scripts\Activate
+
+# Install Dependencies
+pip install -r spin-equilibrium/requirements.txt
+```
+
+### 2. Run Real-time Visualization
+
+To launch the interactive dashboard with the 4-panel thermodynamics plot:
+
+```bash
+python spin-equilibrium/viz/display.py
+```
+
+* **Controls**: Use the sliders to change Temperature and Magnetic Field.
+
+### 3. Run Automated Experiments
+
+To generate the thermodynamic curves and snapshots (reproduce `results/`):
+
+```bash
+python experiments/data_collector.py
+```
+
+---
+
 ## Tech Stack
 
 * **Core Physics**: Python 3.10+, NumPy (Vectorized Linear Algebra)

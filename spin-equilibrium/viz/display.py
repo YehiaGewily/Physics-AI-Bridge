@@ -135,6 +135,16 @@ def main():
         grid_surf = pygame.transform.scale(grid_surf, (GRID_DISPLAY_SIZE, GRID_DISPLAY_SIZE))
         screen.blit(grid_surf, (20, 20))
         
+        # Draw Legend
+        legend_y = 540
+        # Gold Box
+        pygame.draw.rect(screen, (255, 215, 0), (20, legend_y, 20, 20))
+        screen.blit(font.render("Spin UP (+1)", True, (200, 200, 200)), (45, legend_y))
+        
+        # Blue Box
+        pygame.draw.rect(screen, (50, 50, 150), (140, legend_y, 20, 20))
+        screen.blit(font.render("Spin DOWN (-1)", True, (200, 200, 200)), (165, legend_y))
+        
         # 2. Draw Controls
         temp_slider.draw(screen, font)
         field_slider.draw(screen, font)
