@@ -21,7 +21,7 @@ This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** s
 We observe the classic symmetry breaking at the Onsager critical temperature $T_c \approx 2.269$. The specific heat and susceptibility show sharp peaks that scale with lattice size.
 
 ![Phase Transition](results/figures/Fig1_Transition_Overview.png)
-![Simulation GIF](results/animations/ising_evolution.gif)
+
 
 ### 2. Critical Scaling & Universality
 
@@ -101,3 +101,4 @@ pip install -e .
 ## 📜 License
 
 MIT License.
+
