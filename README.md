@@ -1,152 +1,102 @@
-# Phy-AI Bridge: From Spin Networks to Neural Manifolds
+# 2D Ising Model: Simulation & Critical Phenomena Analysis
 
-> **Author**: Yehia Said Gewily  
-> **Institution**: Alexandria University  
-> **Research Focus**: Statistical Mechanics, Energy-Based Models (EBMs), Neuromorphic Computing  
+![Spin Evolution](results/animations/ising_evolution.gif)
 
-This repository documents a multi-phase research project exploring the foundational isomorphism (mathematical equivalence) between **Statistical Mechanics** and **Artificial Intelligence**. Inspired by the foundational work of Hopfield and Boltzmann (and the context of the 2024 Nobel Prize in Physics), this project investigates how local physical interactions give rise to global emergent intelligence.
+## 📌 Project Overview
 
-The goal is to move beyond "black box" deep learning by building AI architectures from the ground up, starting with their physical roots in thermodynamics.
+This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** simulation of the 2D Ising Model to investigate statistical mechanics and critical phenomena. It features a physics-grade simulation engine, comprehensive thermodynamic analysis, and interactive visualization tools.
 
----
+**Key Physics Explored:**
 
-## Phase 1: Spin Equilibrium (The Ising Foundation)
+- **Phase Transitions**: Second-order ferromagnetic-paramagnetic transition.
+- **Critical Phenomena**: Divergence of correlation length and susceptibility near $T_c$.
+- **Finite-Size Scaling**: Extraction of critical exponents ($\nu, \gamma, \beta$).
+- **Hysteresis**: Dynamic magnetic memory and coercivity.
+- **Universality**: Validation of the 2D Ising universality class.
 
-In this phase, we implemented a high-performance computational simulation of the **2D Ising Model**. This serves as the "Physical Baseline" for understanding Energy-Based Models (EBMs).
+## 📊 Key Results
 
-**The Core Concept**: In physics, systems evolve to minimize a **Hamiltonian ($H$)**; in AI, models optimize to minimize a **Loss Function ($L$)**. These are fundamentally the same mathematical operation.
+### 1. Phase Transition
 
-### 1. Theoretical Framework: The Canonical Ensemble
+We observe the classic symmetry breaking at the Onsager critical temperature $T_c \approx 2.269$. The specific heat and susceptibility show sharp peaks that scale with lattice size.
 
-We model the system as a lattice $\Lambda$ of spins $\sigma \in \{+1, -1\}$. The probability of the system existing in a specific configuration is governed by the Boltzmann Distribution:
+![Phase Transition](results/figures/Fig1_Transition_Overview.png)
 
-$$ P(\mathbf{\sigma}) = \frac{1}{\mathcal{Z}} e^{-\beta H(\mathbf{\sigma})} $$
+### 2. Critical Scaling & Universality
 
-Where $\beta = \frac{1}{k_B T}$ is the inverse temperature and $\mathcal{Z}$ is the partition function.
+Using **Finite-Size Scaling (FSS)**, we collapsed data from lattice sizes $L=16$ to $L=64$ onto a single universal curve, confirming the scale-invariance of the system near criticality.
 
-The energy landscape is defined by the Hamiltonian:
-$$ H(\mathbf{\sigma}) = -J \sum_{\langle i,j \rangle} \sigma_i \sigma_j - B \sum_{i} \sigma_i $$
+| Metric | Measured | Theory |
+| :--- | :--- | :--- |
+| $T_c$ | $2.2677 \pm 0.002$ | $2.2692$ |
+| $\gamma/\nu$ | $1.672$ | $1.75$ |
 
-* **Interaction Term ($-J \sum \sigma_i \sigma_j$)**: Represents the "weights" in a neural network. If $J>0$ (Ferromagnetic), spins effectively "vote" to align with their neighbors.
-* **External Field ($-B \sum \sigma_i$)**: Represents the "bias" or input signal in a neural network.
+![Scaling Collapse](results/figures/Fig_FSS_Chi_Collapse.png)
 
-### 2. High-Performance Computational Implementation
+### 3. Magnetic Hysteresis
 
-Simulating large-scale statistical systems requires significant computational power. Standard iterative approaches ($O(N)$) are insufficient for real-time visualization.
+Below $T_c$, the system exhibits magnetic memory. We quantified the "loop area" as a dynamic order parameter, vanishing exactly at the phase transition.
 
-#### Vectorized Checkerboard Decomposition
+![Hysteresis Loops](results/figures/hysteresis_loops.png)
 
-To achieve a simulation speed of **60+ FPS** on a $256 \times 256$ grid (65,536 agents), we implemented a **Vectorized Metropolis-Hastings Algorithm** using NumPy.
+### 4. Spatial Correlations
 
-We exploit the conditional independence of the square lattice. By decomposing the grid into **Red (Even)** and **Black (Odd)** sub-lattices, we can update half the grid simultaneously without race conditions.
+We measured the spin-spin correlation function $G(r)$, observing exponential decay in the disordered phase and power-law decay near $T_c$.
 
-```python
-# Vectorized Update Logic (from core/ising_model.py)
-# 1. Calculate local field for entire parity group
-dE = 2 * grid * (J * neighbors + B)
+![Correlation Decay](results/figures/Fig_C_r_Decay.png)
 
-# 2. Vectorized Decision Mask (Metropolis Criterion)
-# Case A: Energy Decreases (Greedy) -> Flip
-# Case B: Energy Increases (Thermal) -> Flip with prob exp(-dE/T)
-flip_mask = (random_probs < np.exp(-dE / T)) & parity_mask
+## 🚀 Interactive Dashboard
 
-# 3. Parallel State Update
-grid[flip_mask] *= -1
-```
-
-### 3. Thermodynamic Analysis & Critical Phenomena
-
-We conducted automated experiments across a temperature range $T \in [1.0, 4.0]$ to verify the **Second-Order Phase Transition**.
-
-#### The Order Parameter: Magnetization ($M$)
-
-$$ M = \frac{1}{N} \sum_i \sigma_i $$
-Our data confirms the "Magnetization Cliff" at the critical temperature $T_c \approx 2.269$. Below this point, the system exhibits spontaneous symmetry breaking, "choosing" a global state (All-Up or All-Down) effectively acting as a memory unit.
-
-#### Response Functions (Variance Tracking)
-
-We implemented real-time tracking of thermodynamic fluctuations to calculate second-order derivatives of the Free Energy:
-
-**Specific Heat Capacity ($C_v$)**:
-$$ C_v = \frac{\text{Var}(E)}{T^2} $$
-*Observation*: A sharp divergence (peak) in $C_v$ at $T_c$, indicating the system absorbs maximum energy to randomize the ordered domains.
-
-**Magnetic Susceptibility ($\chi$)**:
-$$ \chi = \frac{\text{Var}(M)}{T} $$
-*Observation*: Massive "Critical Opalescence" near $T_c$. The system becomes hypersensitive to external perturbations (The "Edge of Chaos"), which is theoretically optimal for information processing in neural networks.
-
----
-
-## Visual Evidence
-
-The `results/` directory contains visual proof of the simulation's fidelity.
-
-### Thermodynamic Curves
-
-![Thermodynamic Curves](results/thermodynamic_curves.png)
-*Figure 1: Quantitative analysis showing the phase transition. Note the sharp drop in Magnetization (Magenta) and the singularity in Susceptibility (Green) at $T \approx 2.3$.*
-
-### Lattice Evolution
-
-| High Temp (Paramagnetic) | Critical Temp (Scale Invariant) | Low Temp (Ferromagnetic) |
-|:---:|:---:|:---:|
-| $T=4.0$ (Noise) | $T \approx 2.27$ (Fractal Clusters) | $T=1.0$ (Ordered Domain) |
-
----
-
-## Future Work: Phase 2 - The Bridge (Hopfield Networks)
-
-The next stage of this research involves transitioning from **fixed physical constants** to **learnable parameters**.
-
-We will replace the scalar interaction constant $J$ with a weight matrix $W_{ij}$ derived from the **Hebbian Learning Rule**:
-$$ W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^{\mu} \xi_j^{\mu} $$
-
-This transformation will convert our Ising lattice into a functional **Hopfield Network**, capable of storing complex patterns (associative memory) rather than just ferromagnetic order.
-
----
-
----
-
-## How to Run
-
-### 1. Setup Environment
+Explore the physics in real-time with the included Streamlit dashboard:
 
 ```bash
-# Create Virtual Environment
-python -m venv spin-equilibrium/venv
-
-# Activate (Windows)
-.\spin-equilibrium\venv\Scripts\Activate
-
-# Install Dependencies
 pip install -r spin-equilibrium/requirements.txt
+streamlit run spin-equilibrium/viz/dashboard.py
 ```
 
-### 2. Run Real-time Visualization
+**Features:**
 
-To launch the interactive dashboard with the 4-panel thermodynamics plot:
+- 🎛️ **Live Controls**: Adjust Temperature ($T$), Field ($B$), and Coupling ($J$).
+- 📉 **Real-time Plotting**: Watch Magnetization and Energy evolve.
+- 🎯 **Phase Diagram Tracker**: See your current state vs. the Onsager solution.
+
+## 🛠️ Usage
+
+### 1. Run Full Simulation Support
+
+Reproduce all experiments (Thermodynamics, Hysteresis, Scaling):
 
 ```bash
-python spin-equilibrium/viz/display.py
+python experiments/run_simulation.py
+python experiments/hysteresis_loop.py
+python experiments/fss_run.py
 ```
 
-* **Controls**: Use the sliders to change Temperature and Magnetic Field.
+### 2. Generate Plots
 
-### 3. Run Automated Experiments
-
-To generate the thermodynamic curves and snapshots (reproduce `results/`):
+Create publication-quality figures from collected data:
 
 ```bash
-python experiments/data_collector.py
+python experiments/generate_plots.py
+python experiments/fss_analyze.py
 ```
 
----
+### 3. New Package Structure (Refactored)
 
-## Tech Stack
+A clean, installable version of the core logic is provided in `ising_simulation/`.
 
-* **Core Physics**: Python 3.10+, NumPy (Vectorized Linear Algebra)
-* **Visualization**: Pygame (Surface Array Blitting), Matplotlib (Agg Backend for Real-time Plotting)
-* **Environment**: Google Antigravity (Agentic IDE)
-* **Documentation**: LaTeX / Markdown
+```bash
+cd ising_simulation
+pip install -e .
+```
 
----
+## 📂 Repository Structure
+
+- `spin-equilibrium/`: Original source code and modules.
+- `experiments/`: Scripts for running physics experiments.
+- `results/`: Data, Figures, and Animations.
+- `ising_simulation/`: Refactored professional Python package.
+
+## 📜 License
+
+MIT License.

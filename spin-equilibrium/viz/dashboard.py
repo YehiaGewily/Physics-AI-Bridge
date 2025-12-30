@@ -147,7 +147,7 @@ if run_btn:
         # Map -1 -> 0 (Black), 1 -> 255 (White)
         img_data = ((sim.grid + 1) * 127.5).astype(np.uint8)
         # Use simple nearst neighbor via st.image (auto)
-        lattice_placeholder.image(img_data, caption=f"Step {st.session_state.step_count}", width=None, output_format='PNG', clamp=True, channels='GRAY')
+        lattice_placeholder.image(img_data, caption=f"Step {st.session_state.step_count}", width="stretch", output_format='PNG', clamp=True, channels='GRAY')
         
         # 2. Stats Overlay
         stats_placeholder.markdown(f"""
@@ -180,7 +180,7 @@ if run_btn:
 else:
     # If not running, just show current state
     img_data = ((sim.grid + 1) * 127.5).astype(np.uint8)
-    lattice_placeholder.image(img_data, caption=f"Step {st.session_state.step_count} (Paused)", width=None, output_format='PNG', clamp=True, channels='GRAY')
+    lattice_placeholder.image(img_data, caption=f"Step {st.session_state.step_count} (Paused)", width="stretch", output_format='PNG', clamp=True, channels='GRAY')
     
     m = abs(sim.magnetization) / (L*L)
     e = sim.energy() / (L*L)
