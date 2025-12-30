@@ -1,5 +1,8 @@
 numpy
 matplotlib
-pygame
 pandas
+scipy
+seaborn
 tqdm
+pygame
+streamlit
