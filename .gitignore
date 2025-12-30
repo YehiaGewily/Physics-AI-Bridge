@@ -1,3 +1,11 @@
 spin-equilibrium/venv/
 __pycache__/
 *.pyc
+
+# Data Results
+results/*.pkl
+results/snapshots/
+results/animations/*.mp4
+# Keep figures and small stats
+!results/figures/
+!results/hysteresis_stats.csv

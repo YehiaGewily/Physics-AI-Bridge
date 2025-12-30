@@ -1,0 +1,14 @@
+Figure 1: Overview of thermodynamic quantities across the phase transition for the 2D Ising Model. 
+(Top-Left) Magnetization $\langle |M| \rangle$ vs Temperature, showing the transition from ordered (ferromagnetic) to disordered (paramagnetic) state. 
+(Top-Right) Energy per spin $\langle E \rangle$ vs Temperature, showing the continuous change in internal energy. 
+(Bottom-Left) Magnetic Susceptibility $\chi$ vs Temperature, exhibiting a sharp peak near the critical temperature $T_c \approx 2.269$. 
+(Bottom-Right) Specific Heat $C_v$ vs Temperature, also diverging near $T_c$. Error bars indicate fluctuations derived from susceptibility and specific heat measurements.
+
+Figure 2: detailed view of the critical region ($T \in [2.0, 2.5]$). 
+The dual-axis plot overlays Magnetic Susceptibility $\chi$ (left axis, solid line) and Specific Heat $C_v$ (right axis, dashed line). Both quantities show simultaneous divergence at the critical temperature $T_c \approx 2.269$ (indicated by the vertical line), a hallmark of a second-order phase transition.
+
+Figure 3: Finite-Size Scaling of Magnetization. 
+The order parameter $\langle |M| \rangle$ is plotted for different lattice sizes $L \in \{32, 64, 128, 256\}$. As the system size increases, the transition becomes sharper, approaching the step-function behavior expected in the thermodynamic limit. The critical temperature $T_c$ is marked by the dashed line.
+
+Figure 4: Divergence of the Correlation Length $\xi(T)$. 
+The correlation length, estimated via $\xi \approx -1/\ln(|C(1)/C(0)|)$, is plotted on a logarithmic scale. The quantity diverges near $T_c$, indicating that spin fluctuations become correlated over macroscopic distances at the critical point.

@@ -15,20 +15,28 @@ class IsingSimulation:
         self.J = J
         self.temperature = temperature
         self.B = B
-        # Initialize grid with random spins (-1 or 1)
-        self.grid = np.random.choice([-1, 1], size=(size, size))
         
-        # Statistics storage (Ring buffer style or full history)
-        # Storing last 1000 steps for rolling variance
-        self.energy_history = []
-        self.magnetization_history = []
-        self.history_limit = 1000
+        # Initialize grid with random spins (-1 or 1)
+        self.grid = np.random.choice([-1, 1], size=(size, size)).astype(np.int8)
+        
+        # Pre-compute checkerboard masks
+        x, y = np.indices((size, size))
+        self.mask_even = (x + y) % 2 == 0
+        self.mask_odd = (x + y) % 2 == 1
+        
+        # Pre-compute exponential lookup table for efficiency if needed, 
+        # but for continuous T it's better to compute on fly or cache per T update.
+        # We will compute on fly for flexibility.
 
-    
+    @property
+    def magnetization(self) -> float:
+        """Calculate the total magnetization."""
+        return np.sum(self.grid)
+
     def energy(self) -> float:
         """
         Calculate the total energy of the system.
-        H = -J * sum(sigma_i * sigma_j)
+        H = -J * sum(sigma_i * sigma_j) - B * sum(sigma_i)
         """
         # Shift grid to get neighbors
         neighbors = (
@@ -37,31 +45,25 @@ class IsingSimulation:
             np.roll(self.grid, 1, axis=1) + 
             np.roll(self.grid, -1, axis=1)
         )
-        total_energy = -self.J * np.sum(self.grid * neighbors) / 2.0
+        # Factor of 1/2 because each pair is counted twice
+        interaction_energy = -self.J * np.sum(self.grid * neighbors) / 2.0
         
-        # Add External Field term: -B * sum(sigma)
-        total_energy -= self.B * np.sum(self.grid)
-        return total_energy
+        # External Field term
+        field_energy = -self.B * np.sum(self.grid)
+        
+        return interaction_energy + field_energy
 
     def metropolis_step(self, steps_per_sweep: int = 1):
         """
         Perform Metropolis-Hastings update using Checkerboard Vectorization.
-        Allows for parallel updates of non-interacting spins.
         
         Args:
-            steps_per_sweep (int): Number of checkerboard sweeps (updates all pixels).
+            steps_per_sweep (int): Number of full lattice sweeps.
         """
         for _ in range(steps_per_sweep):
-            # Checkerboard update: 0 = even sites, 1 = odd sites
-            for parity in [0, 1]:
-                # Calculate neighbors sum for whole grid
-                # (We calculate for all, but only use half. Optimization possible but complex in pure numpy without slicing)
-                # Slicing approach:
-                # To fully optimize, we would slice grid into chessboards.
-                # Here we use masking which is still much faster than loops.
-                
-                # Roll neighbors
-                # Note: This is re-calculated for each parity step.
+            # We alternate between even and odd sublattices
+            for mask in [self.mask_even, self.mask_odd]:
+                # Calculate neighbors sum
                 neighbors = (
                     np.roll(self.grid, 1, axis=0) + 
                     np.roll(self.grid, -1, axis=0) + 
@@ -69,84 +71,87 @@ class IsingSimulation:
                     np.roll(self.grid, -1, axis=1)
                 )
                 
-                # Calculate dE for all sites
-                # dE = 2 * s * (J * sum_neighbors + B)
+                # Calculate energy change dE for flipping spins
+                # dE = 2 * s_i * (J * sum_neighbors + B)
+                # We only care about sites in the current mask
                 dE = 2 * self.grid * (self.J * neighbors + self.B)
                 
-                # Create mask for current parity
-                # (i + j) % 2 == parity
-                # Efficient mask generation
-                x, y = np.indices(self.grid.shape)
-                mask = (x + y) % 2 == parity
+                # Metropolis criterion:
+                # Flip if dE < 0 OR random < exp(-dE/T)
                 
-                # Select only relevant dE
-                # We want to flip if dE < 0 OR rand < exp(-dE/T)
+                # Generate random numbers for the whole grid (vectorized)
+                # Optimization: We could generate only for masked, but indexing is costly.
+                # Masking the operation is usually faster in NumPy for dense arrays.
+                random_vals = np.random.random(self.grid.shape)
                 
-                # Vectorized decision
-                # Condition 1: dE < 0 (Always flip)
-                # Condition 2: Random < Exp (Probabilistic flip)
+                # Calculate acceptance probability
+                # We use specific logic to avoid exp overflow/warnings although dE usually well behaved
+                # exp(-dE/T)
                 
-                # Calculate transition probs for only the valid mask
-                # To avoid overflow/warning in exp, we can compute only where necessary,
-                # but calculating all and masking is easier for code clarity.
+                # Logic:
+                # 1. dE <= 0: Always flip. (exp(-dE/T) >= 1)
+                # 2. dE > 0: Flip with prob exp(-dE/T)
                 
-                # Random probabilities
-                random_probs = np.random.rand(*self.grid.shape)
+                # Boolean mask for flips
+                # Case 1: dE <= 0
+                flip_condition = (dE <= 0)
                 
-                # Flip condition
-                # dE < 0  OR  random < exp(...)
-                # Note: if dE < 0, then exp(-dE/T) > 1, so random < exp is always true.
-                # So we just need: random < exp(-dE/T)
+                # Case 2: dE > 0 and random < exp(...)
+                # We only compute exp where dE > 0 to save time? 
+                # Actually vectorized exp is fast.
                 
-                flip_mask = (random_probs < np.exp(-dE / self.temperature)) & mask
+                # Combined condition:
+                # (dE <= 0) | (random_vals < np.exp(-dE / self.temperature))
+                # AND applied only to current checkerboard mask
                 
-                # Apply flips
-                self.grid[flip_mask] *= -1
+                should_flip = (dE <= 0) | (random_vals < np.exp(-dE / self.temperature))
                 
-        # Update statistics after full sweep(s)
-        current_E = self.energy()
-        current_M = np.sum(self.grid) # Magnetization
-        
-        self.energy_history.append(current_E)
-        self.magnetization_history.append(current_M)
-        
-        if len(self.energy_history) > self.history_limit:
-            self.energy_history.pop(0)
-            self.magnetization_history.pop(0)
+                # Apply mask
+                final_flip_mask = should_flip & mask
+                
+                # Apply flips: s -> -s
+                self.grid[final_flip_mask] *= -1
 
-    def get_statistics(self):
+    def compute_spatial_correlation(self, max_r: int) -> np.ndarray:
         """
-        Returns stats dictionary including Variance of E and M.
-        """
-        if len(self.energy_history) < 2:
-            current_E = self.energy() if not self.energy_history else self.energy_history[-1]
-            current_M = np.sum(self.grid) if not self.magnetization_history else self.magnetization_history[-1]
-            return {
-                "mean_E": current_E, 
-                "mean_M": current_M, 
-                "var_E": 0, 
-                "var_M": 0, 
-                "Cv": 0, 
-                "Chi": 0
-            }
+        Compute the spatial correlation function C(r) = <s_i * s_{i+r}> - <s_i>^2
+        Averaged over all directions and lattice sites.
+        
+        Args:
+            max_r (int): Maximum distance to compute correlation for.
             
-        var_E = np.var(self.energy_history)
-        var_M = np.var(self.magnetization_history)
+        Returns:
+            np.ndarray: Array of correlation values for r = 0 to max_r.
+        """
+        N = self.size * self.size
+        avg_m = np.mean(self.grid)
+        squared_avg_m = avg_m ** 2
         
-        # Specific Heat Cv = Var(E) / (k * T^2)  (Assume k=1)
-        Cv = var_E / (self.temperature ** 2)
+        correlations = []
         
-        # Susceptibility Chi = Var(M) / (k * T)
-        Chi = var_M / self.temperature
+        # Naive implementation using np.roll for each distance
+        # For r=0, correlation is 1 (s_i^2 = 1) - <M>^2
+        # But standard definition C(r) usually just <s_0 s_r> or <s_0 s_r> - <m>^2
+        # We will return <s_i s_{i+r}> - <m>^2
         
-        return {
-            "mean_E": np.mean(self.energy_history),
-            "mean_M": np.mean(self.magnetization_history),
-            "var_E": var_E,
-            "var_M": var_M,
-            "Cv": Cv,
-            "Chi": Chi
-        }
+        for r in range(max_r + 1):
+            if r == 0:
+                correlations.append(1.0 - squared_avg_m)
+                continue
+                
+            # We average correlations in x and y directions for distance r
+            # Horizontal neighbors at distance r
+            corr_x = np.mean(self.grid * np.roll(self.grid, r, axis=1))
+            
+            # Vertical neighbors at distance r
+            corr_y = np.mean(self.grid * np.roll(self.grid, r, axis=0))
+            
+            # Average both directions
+            c_r = (corr_x + corr_y) / 2.0 - squared_avg_m
+            correlations.append(c_r)
+            
+        return np.array(correlations)
 
     def set_temperature(self, t: float):
         self.temperature = t
+
