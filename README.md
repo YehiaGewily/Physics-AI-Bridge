@@ -22,7 +22,6 @@ We observe the classic symmetry breaking at the Onsager critical temperature $T_
 
 ![Phase Transition](results/figures/Fig1_Transition_Overview.png)
 
-
 ### 2. Critical Scaling & Universality
 
 Using **Finite-Size Scaling (FSS)**, we collapsed data from lattice sizes $L=16$ to $L=64$ onto a single universal curve, confirming the scale-invariance of the system near criticality.
@@ -45,6 +44,44 @@ Below $T_c$, the system exhibits magnetic memory. We quantified the "loop area" 
 We measured the spin-spin correlation function $G(r)$, observing exponential decay in the disordered phase and power-law decay near $T_c$.
 
 ![Correlation Decay](results/figures/Fig_C_r_Decay.png)
+
+## 🧠 Phase 2: Hopfield Networks & Associative Memory
+
+Building on the statistical mechanics foundation of the Ising Model, Phase 2 implements a **Hopfield Network** to demonstrate the emergence of associative memory. This leverages the mathematical isomorphism between the physics of magnetic systems and neural dynamics.
+
+**Core Concept**: The "Energy" minimum of a spin glass corresponds to a retrieved "Memory" in a neural network.
+
+### Key Implemented Features
+
+* **Hebbian Learning**: Weights are learned via $W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^\mu \xi_j^\mu$.
+- **Associative Recall**: Ability to recover perfect patterns from 50% corrupted inputs.
+- **Energy Landscape Mapping**: Visualization of the basins of attraction and spurious states.
+- **Capacity Analysis**: Verification of the theoretical storage limit ($C \approx 0.14N$).
+
+### Experiments
+
+Run the Hopfield demonstration suite:
+
+```bash
+# 1. Single Pattern Robustness (Test noise tolerance)
+python experiments/experiment_1_single_pattern.py
+
+# 2. Network Capacity (Test storage limits)
+python experiments/experiment_2_capacity.py
+
+# 3. Visual Verification (Pattern generation & corruption)
+python experiments/test_utils_visual.py
+```
+
+### Results & Visualizations
+
+We provide tools to visualize the high-dimensional state space:
+
+- **`results/hopfield/hopfield_energy_landscape.png`**: PCA projection of the energy surface, showing memories as deep valleys.
+- **`results/hopfield/hopfield_basin_map.png`**: Decision Boundaries between competing memories.
+- **`results/hopfield/hopfield_spurious_states.png`**: "Hallucinated" mixed states found by the network.
+
+---
 
 ## 🚀 Interactive Dashboard
 
@@ -101,4 +138,3 @@ pip install -e .
 ## 📜 License
 
 MIT License.
-
