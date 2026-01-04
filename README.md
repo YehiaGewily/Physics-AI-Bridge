@@ -31,19 +31,19 @@ Using **Finite-Size Scaling (FSS)**, we collapsed data from lattice sizes $L=16$
 | $T_c$ | $2.2677 \pm 0.002$ | $2.2692$ |
 | $\gamma/\nu$ | $1.672$ | $1.75$ |
 
-![Scaling Collapse](results/figures/Fig_FSS_Chi_Collapse.png)
+![Scaling Collapse](results/figures/ising/Fig_FSS_Chi_Collapse.png)
 
 ### 3. Magnetic Hysteresis
 
 Below $T_c$, the system exhibits magnetic memory. We quantified the "loop area" as a dynamic order parameter, vanishing exactly at the phase transition.
 
-![Hysteresis Loops](results/figures/hysteresis_loops.png)
+![Hysteresis Loops](results/figures/ising/hysteresis_loops.png)
 
 ### 4. Spatial Correlations
 
 We measured the spin-spin correlation function $G(r)$, observing exponential decay in the disordered phase and power-law decay near $T_c$.
 
-![Correlation Decay](results/figures/Fig_C_r_Decay.png)
+![Correlation Decay](results/figures/ising/Fig_C_r_Decay.png)
 
 ## 🧠 Phase 2: Hopfield Networks & Associative Memory
 
@@ -138,3 +138,4 @@ pip install -e .
 ## 📜 License
 
 MIT License.
+
