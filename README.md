@@ -20,7 +20,7 @@ This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** s
 
 We observe the classic symmetry breaking at the Onsager critical temperature $T_c \approx 2.269$. The specific heat and susceptibility show sharp peaks that scale with lattice size.
 
-![Phase Transition](results/figures/Fig1_Transition_Overview.png)
+![Phase Transition](results/ising/Fig1_Transition_Overview.png)
 
 ### 2. Critical Scaling & Universality
 
@@ -31,19 +31,19 @@ Using **Finite-Size Scaling (FSS)**, we collapsed data from lattice sizes $L=16$
 | $T_c$ | $2.2677 \pm 0.002$ | $2.2692$ |
 | $\gamma/\nu$ | $1.672$ | $1.75$ |
 
-![Scaling Collapse](results/figures/Fig_FSS_Chi_Collapse.png)
+![Scaling Collapse](results/ising/Fig_FSS_Chi_Collapse.png)
 
 ### 3. Magnetic Hysteresis
 
 Below $T_c$, the system exhibits magnetic memory. We quantified the "loop area" as a dynamic order parameter, vanishing exactly at the phase transition.
 
-![Hysteresis Loops](results/figures/hysteresis_loops.png)
+![Hysteresis Loops](results/ising/hysteresis_loops.png)
 
 ### 4. Spatial Correlations
 
 We measured the spin-spin correlation function $G(r)$, observing exponential decay in the disordered phase and power-law decay near $T_c$.
 
-![Correlation Decay](results/figures/Fig_C_r_Decay.png)
+![Correlation Decay](results/ising/Fig_C_r_Decay.png)
 
 ## 🧠 Phase 2: Hopfield Networks & Associative Memory
 
@@ -53,7 +53,8 @@ Building on the statistical mechanics foundation of the Ising Model, Phase 2 imp
 
 ### Key Implemented Features
 
-* **Hebbian Learning**: Weights are learned via $W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^\mu \xi_j^\mu$.
+- **Hebbian Learning**: Weights are learned via $W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^\mu \xi_j^\mu$.
+
 - **Associative Recall**: Ability to recover perfect patterns from 50% corrupted inputs.
 - **Energy Landscape Mapping**: Visualization of the basins of attraction and spurious states.
 - **Capacity Analysis**: Verification of the theoretical storage limit ($C \approx 0.14N$).
