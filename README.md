@@ -2,7 +2,7 @@
 
 ![Spin Evolution](results/animations/ising_evolution.gif)
 
-## 📌 Project Overview
+## Project Overview
 
 This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** simulation of the 2D Ising Model to investigate statistical mechanics and critical phenomena. It features a physics-grade simulation engine, comprehensive thermodynamic analysis, and interactive visualization tools.
 
@@ -14,7 +14,7 @@ This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** s
 - **Hysteresis**: Dynamic magnetic memory and coercivity.
 - **Universality**: Validation of the 2D Ising universality class.
 
-## 📊 Key Results
+## Key Results
 
 ### 1. Phase Transition
 
@@ -45,7 +45,7 @@ We measured the spin-spin correlation function $G(r)$, observing exponential dec
 
 ![Correlation Decay](results/ising/Fig_C_r_Decay.png)
 
-## 🧠 Phase 2: Hopfield Networks & Associative Memory
+## Phase 2: Hopfield Networks & Associative Memory
 
 Building on the statistical mechanics simulation of the 2D Ising Model, Phase 2 implements a **Hopfield Network** to investigate the emergence of associative memory. By extending the Ising formalism to include non-local, programmable couplings ($J_{ij}$), we bridge the gap between Spin Glasses and neural computation.
 
@@ -59,7 +59,7 @@ The Hopfield network is mathematically isomorphic to an Ising model with long-ra
 - **Pattern Corruption & Restoration**: Capability to recover perfect patterns from inputs degraded by noise (e.g., 30-50% flipped bits).
 - **Capacity Analysis**: Empirical verification of the storage capacity limit ($C \approx 0.14N$).
 
-### 🔬 Experimental Results
+### Experimental Results
 
 #### 1. Pattern Restoration (Associative Recall)
 
@@ -70,6 +70,7 @@ We demonstrated the network's error-correction capability by initializing it wit
 #### 2. Network Capacity & Interference
 
 We analyzed the network's performance as the number of stored patterns ($P$) increased.
+
 - **Success Regime**: For $P < 0.14N$, the network reliably retrieves memories.
 - **Failure Regime**: As $P$ exceeds the capacity limit, "crosstalk" between patterns creates spurious local minima (spin glass phase), causing the network to converge to "hallucinated" mixed states rather than pure memories.
 
@@ -81,7 +82,7 @@ We utilized a custom utility to generate orthogonal bit patterns (e.g., 'Y', 'H'
 
 ![Pattern Visualization](results/hopfield/test_utils_visual.png)
 
-### 💻 Running the Neural Experiment
+### Running the Neural Experiment
 
 To reproduce the Hopfield network experiments:
 
@@ -98,7 +99,7 @@ python experiments/test_utils_visual.py
 
 ---
 
-## 🚀 Interactive Dashboard
+## Interactive Dashboard
 
 Explore the physics in real-time with the included Streamlit dashboard:
 
@@ -109,11 +110,11 @@ streamlit run spin-equilibrium/viz/dashboard.py
 
 **Features:**
 
-- 🎛️ **Live Controls**: Adjust Temperature ($T$), Field ($B$), and Coupling ($J$).
-- 📉 **Real-time Plotting**: Watch Magnetization and Energy evolve.
-- 🎯 **Phase Diagram Tracker**: See your current state vs. the Onsager solution.
+- **Live Controls**: Adjust Temperature ($T$), Field ($B$), and Coupling ($J$).
+- **Real-time Plotting**: Watch Magnetization and Energy evolve.
+- **Phase Diagram Tracker**: See your current state vs. the Onsager solution.
 
-## 🛠️ Usage
+## Usage
 
 ### 1. Run Full Simulation Support
 
@@ -143,13 +144,13 @@ cd ising_simulation
 pip install -e .
 ```
 
-## 📂 Repository Structure
+## Repository Structure
 
 - `spin-equilibrium/`: Original source code and modules.
 - `experiments/`: Scripts for running physics experiments.
 - `results/`: Data, Figures, and Animations.
 - `ising_simulation/`: Refactored professional Python package.
 
-## 📜 License
+## License
 
 MIT License.
