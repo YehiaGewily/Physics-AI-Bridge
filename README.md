@@ -61,22 +61,30 @@ The Hopfield network is mathematically isomorphic to an Ising model with long-ra
 
 ### Experimental Results
 
-#### 1. Pattern Restoration (Associative Recall)
+We quantified the network's performance using orthogonal bit patterns on a $10 \times 10$ lattice ($N=100$). The results validate standard Hopfield theory.
+
+| Experiment | Condition | Measured Success | Theoretical Expectation |
+| :--- | :--- | :--- | :--- |
+| **Robustness** | Noise $\le$ 25% | $100\%$ | Perfect Retrieval |
+| **Robustness** | Noise = 50% | $\approx 0\%$ | Unstable (Random) |
+| **Capacity** | Low Load ($P=3$) | $100\%$ | Global Minima Stable |
+| **Capacity** | High Load ($P \approx 0.14N$) | $< 20\%$ | Spin Glass Phase (Overload) |
+
+### 1. Pattern Restoration (Associative Recall)
 
 We demonstrated the network's error-correction capability by initializing it with a corrupted version of a stored pattern (e.g., the letter 'A' with varying noise levels). The network dynamics successfully evolved the state down the energy gradient to the original clean pattern.
 
 ![Pattern Restoration](results/hopfield/exp1_single_pattern_results.png)
 
-#### 2. Network Capacity & Interference
+### 2. Network Capacity & Interference
 
 We analyzed the network's performance as the number of stored patterns ($P$) increased.
-
 - **Success Regime**: For $P < 0.14N$, the network reliably retrieves memories.
 - **Failure Regime**: As $P$ exceeds the capacity limit, "crosstalk" between patterns creates spurious local minima (spin glass phase), causing the network to converge to "hallucinated" mixed states rather than pure memories.
 
 ![Capacity Analysis](results/hopfield/exp2_capacity_results.png)
 
-#### 3. Pattern Generation & Visualization
+### 3. Pattern Generation & Visualization
 
 We utilized a custom utility to generate orthogonal bit patterns (e.g., 'Y', 'H', 'E', 'I', 'A') to rigorously test the network's ability to discriminate between distinct memories.
 
