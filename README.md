@@ -47,40 +47,54 @@ We measured the spin-spin correlation function $G(r)$, observing exponential dec
 
 ## 🧠 Phase 2: Hopfield Networks & Associative Memory
 
-Building on the statistical mechanics foundation of the Ising Model, Phase 2 implements a **Hopfield Network** to demonstrate the emergence of associative memory. This leverages the mathematical isomorphism between the physics of magnetic systems and neural dynamics.
+Building on the statistical mechanics simulation of the 2D Ising Model, Phase 2 implements a **Hopfield Network** to investigate the emergence of associative memory. By extending the Ising formalism to include non-local, programmable couplings ($J_{ij}$), we bridge the gap between Spin Glasses and neural computation.
 
-**Core Concept**: The "Energy" minimum of a spin glass corresponds to a retrieved "Memory" in a neural network.
+**Theoretical Foundation:**
+The Hopfield network is mathematically isomorphic to an Ising model with long-range interactions. The "Energy" of the spin system is equivalent to a Lyapunov function for the network dynamics, ensuring that the system always evolves towards energy minima. These minima represent stored "memories."
 
 ### Key Implemented Features
 
-- **Hebbian Learning**: Weights are learned via $W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^\mu \xi_j^\mu$.
+- **Hebbian Learning Rule**: Weights are constructed via the outer product of target patterns: $W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^\mu \xi_j^\mu$.
+- **Asynchronous Dynamics**: Neurons update stochastically or sequentially, minimizing the global energy $E = -\frac{1}{2} \sum_{i,j} W_{ij} s_i s_j$.
+- **Pattern Corruption & Restoration**: Capability to recover perfect patterns from inputs degraded by noise (e.g., 30-50% flipped bits).
+- **Capacity Analysis**: Empirical verification of the storage capacity limit ($C \approx 0.14N$).
 
-- **Associative Recall**: Ability to recover perfect patterns from 50% corrupted inputs.
-- **Energy Landscape Mapping**: Visualization of the basins of attraction and spurious states.
-- **Capacity Analysis**: Verification of the theoretical storage limit ($C \approx 0.14N$).
+### 🔬 Experimental Results
 
-### Experiments
+#### 1. Pattern Restoration (Associative Recall)
 
-Run the Hopfield demonstration suite:
+We demonstrated the network's error-correction capability by initializing it with a corrupted version of a stored pattern (e.g., the letter 'A' with varying noise levels). The network dynamics successfully evolved the state down the energy gradient to the original clean pattern.
+
+![Pattern Restoration](results/hopfield/exp1_single_pattern_results.png)
+
+#### 2. Network Capacity & Interference
+
+We analyzed the network's performance as the number of stored patterns ($P$) increased.
+- **Success Regime**: For $P < 0.14N$, the network reliably retrieves memories.
+- **Failure Regime**: As $P$ exceeds the capacity limit, "crosstalk" between patterns creates spurious local minima (spin glass phase), causing the network to converge to "hallucinated" mixed states rather than pure memories.
+
+![Capacity Analysis](results/hopfield/exp2_capacity_results.png)
+
+#### 3. Pattern Generation & Visualization
+
+We utilized a custom utility to generate orthogonal bit patterns (e.g., 'Y', 'H', 'E', 'I', 'A') to rigorously test the network's ability to discriminate between distinct memories.
+
+![Pattern Visualization](results/hopfield/test_utils_visual.png)
+
+### 💻 Running the Neural Experiment
+
+To reproduce the Hopfield network experiments:
 
 ```bash
-# 1. Single Pattern Robustness (Test noise tolerance)
+# 1. Run Single Pattern Validity Test
 python experiments/experiment_1_single_pattern.py
 
-# 2. Network Capacity (Test storage limits)
+# 2. Run Capacity Analysis
 python experiments/experiment_2_capacity.py
 
-# 3. Visual Verification (Pattern generation & corruption)
+# 3. View Pattern Utilities
 python experiments/test_utils_visual.py
 ```
-
-### Results & Visualizations
-
-We provide tools to visualize the high-dimensional state space:
-
-- **`results/hopfield/hopfield_energy_landscape.png`**: PCA projection of the energy surface, showing memories as deep valleys.
-- **`results/hopfield/hopfield_basin_map.png`**: Decision Boundaries between competing memories.
-- **`results/hopfield/hopfield_spurious_states.png`**: "Hallucinated" mixed states found by the network.
 
 ---
 
