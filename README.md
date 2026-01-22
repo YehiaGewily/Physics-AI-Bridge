@@ -59,7 +59,7 @@ The Hopfield network is mathematically isomorphic to an Ising model with long-ra
 - **Pattern Corruption & Restoration**: Capability to recover perfect patterns from inputs degraded by noise (e.g., 30-50% flipped bits).
 - **Capacity Analysis**: Empirical verification of the storage capacity limit ($C \approx 0.14N$).
 
-### Experimental Results
+### Experimental Results:
 
 We quantified the network's performance using orthogonal bit patterns on a $10 \times 10$ lattice ($N=100$). The results validate standard Hopfield theory.
 
@@ -162,3 +162,4 @@ pip install -e .
 ## License
 
 MIT License.
+
