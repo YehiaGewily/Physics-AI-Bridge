@@ -91,6 +91,7 @@ We utilized a custom utility to generate orthogonal bit patterns (e.g., 'Y', 'H'
 ![Pattern Visualization](results/hopfield/test_utils_visual.png)
 
 ### Running the Neural Experiment
+ 
 
 To reproduce the Hopfield network experiments:
 
@@ -162,4 +163,5 @@ pip install -e .
 ## License
 
 MIT License.
+
 
