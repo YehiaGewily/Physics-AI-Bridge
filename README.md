@@ -2,7 +2,7 @@
 
 ![Spin Evolution](results/animations/ising_evolution.gif)
 
-## Project Overview
+## Project Overview 
 
 This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** simulation of the 2D Ising Model to investigate statistical mechanics and critical phenomena. It features a physics-grade simulation engine, comprehensive thermodynamic analysis, and interactive visualization tools.
 
