@@ -10,3 +10,5 @@ results/animations/*.mp4
 !results/figures/
 !results/hysteresis_stats.csv
 .qoder/
+
+docs/Physics_of_AI_Research_Project.pdf
