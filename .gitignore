@@ -9,3 +9,4 @@ results/animations/*.mp4
 # Keep figures and small stats
 !results/figures/
 !results/hysteresis_stats.csv
+.qoder/
