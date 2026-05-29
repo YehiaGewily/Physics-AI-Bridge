@@ -1,0 +1,19 @@
+============================================================
+RESULTS SUMMARY
+============================================================
+Total trials:                 500
+Convergence to stored:        201 ( 40.2%)
+Convergence to inverted:      201 ( 40.2%)
+Mixture states:                48 (  9.6%)
+Unknown attractors:            50 ( 10.0%)
+Number of unique spurious attractors: 8
+
+Energy of stored patterns:
+  N: E = -48.90
+  O: E = -50.10
+  V: E = -49.86
+Mean energy of spurious states:         -39.17 (±SEM 0.45)
+Mean energy of stored+inverted (visit-weighted): -48.81 (±SEM 0.08)
+Unweighted mean of stored pattern energies:      -49.62
+Energy gap (spurious − legitimate):              9.65
+
