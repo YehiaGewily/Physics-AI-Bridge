@@ -1,167 +1,182 @@
-# 2D Ising Model: Simulation & Critical Phenomena Analysis
+# Physics-AI Bridge
 
-![Spin Evolution](results/animations/ising_evolution.gif)
+A structured research project tracing the mathematical foundation of artificial intelligence back to its roots in statistical mechanics. Each phase proves that the same energy minimization principle that governs physical systems also governs neural computation.
 
-## Project Overview 
+## The Big Idea
 
-This project implements a high-performance **Markov Chain Monte Carlo (MCMC)** simulation of the 2D Ising Model to investigate statistical mechanics and critical phenomena. It features a physics-grade simulation engine, comprehensive thermodynamic analysis, and interactive visualization tools.
+Inspired by the ScienceClic English video "The Physics of A.I.", this project proves that AI is not "just code" — it is the laws of statistical mechanics in action. We trace a single mathematical thread from 19th-century physics through modern deep learning to quantum field theory.
 
-**Key Physics Explored:**
-
-- **Phase Transitions**: Second-order ferromagnetic-paramagnetic transition.
-- **Critical Phenomena**: Divergence of correlation length and susceptibility near $T_c$.
-- **Finite-Size Scaling**: Extraction of critical exponents ($\nu, \gamma, \beta$).
-- **Hysteresis**: Dynamic magnetic memory and coercivity.
-- **Universality**: Validation of the 2D Ising universality class.
-
-## Key Results
-
-### 1. Phase Transition
-
-We observe the classic symmetry breaking at the Onsager critical temperature $T_c \approx 2.269$. The specific heat and susceptibility show sharp peaks that scale with lattice size.
-
-![Phase Transition](results/ising/Fig1_Transition_Overview.png)
-
-### 2. Critical Scaling & Universality
-
-Using **Finite-Size Scaling (FSS)**, we collapsed data from lattice sizes $L=16$ to $L=64$ onto a single universal curve, confirming the scale-invariance of the system near criticality.
-
-| Metric | Measured | Theory |
-| :--- | :--- | :--- |
-| $T_c$ | $2.2677 \pm 0.002$ | $2.2692$ |
-| $\gamma/\nu$ | $1.672$ | $1.75$ |
-
-![Scaling Collapse](results/ising/Fig_FSS_Chi_Collapse.png)
-
-### 3. Magnetic Hysteresis
-
-Below $T_c$, the system exhibits magnetic memory. We quantified the "loop area" as a dynamic order parameter, vanishing exactly at the phase transition.
-
-![Hysteresis Loops](results/ising/hysteresis_loops.png)
-
-### 4. Spatial Correlations
-
-We measured the spin-spin correlation function $G(r)$, observing exponential decay in the disordered phase and power-law decay near $T_c$.
-
-![Correlation Decay](results/ising/Fig_C_r_Decay.png)
-
-## Phase 2: Hopfield Networks & Associative Memory
-
-Building on the statistical mechanics simulation of the 2D Ising Model, Phase 2 implements a **Hopfield Network** to investigate the emergence of associative memory. By extending the Ising formalism to include non-local, programmable couplings ($J_{ij}$), we bridge the gap between Spin Glasses and neural computation.
-
-**Theoretical Foundation:**
-The Hopfield network is mathematically isomorphic to an Ising model with long-range interactions. The "Energy" of the spin system is equivalent to a Lyapunov function for the network dynamics, ensuring that the system always evolves towards energy minima. These minima represent stored "memories."
-
-### Key Implemented Features
-
-- **Hebbian Learning Rule**: Weights are constructed via the outer product of target patterns: $W_{ij} = \frac{1}{N} \sum_{\mu} \xi_i^\mu \xi_j^\mu$.
-- **Asynchronous Dynamics**: Neurons update stochastically or sequentially, minimizing the global energy $E = -\frac{1}{2} \sum_{i,j} W_{ij} s_i s_j$.
-- **Pattern Corruption & Restoration**: Capability to recover perfect patterns from inputs degraded by noise (e.g., 30-50% flipped bits).
-- **Capacity Analysis**: Empirical verification of the storage capacity limit ($C \approx 0.14N$).
-
-### Experimental Results:
-
-We quantified the network's performance using orthogonal bit patterns on a $10 \times 10$ lattice ($N=100$). The results validate standard Hopfield theory.
-
-| Experiment | Condition | Measured Success | Theoretical Expectation |
-| :--- | :--- | :--- | :--- |
-| **Robustness** | Noise $\le$ 25% | $100\%$ | Perfect Retrieval |
-| **Robustness** | Noise = 50% | $\approx 0\%$ | Unstable (Random) |
-| **Capacity** | Low Load ($P=3$) | $100\%$ | Global Minima Stable |
-| **Capacity** | High Load ($P \approx 0.14N$) | $< 20\%$ | Spin Glass Phase (Overload) |
-
-### 1. Pattern Restoration (Associative Recall)
-
-We demonstrated the network's error-correction capability by initializing it with a corrupted version of a stored pattern (e.g., the letter 'A' with varying noise levels). The network dynamics successfully evolved the state down the energy gradient to the original clean pattern.
-
-![Pattern Restoration](results/hopfield/exp1_single_pattern_results.png)
-
-### 2. Network Capacity & Interference
-
-We analyzed the network's performance as the number of stored patterns ($P$) increased.
-- **Success Regime**: For $P < 0.14N$, the network reliably retrieves memories.
-- **Failure Regime**: As $P$ exceeds the capacity limit, "crosstalk" between patterns creates spurious local minima (spin glass phase), causing the network to converge to "hallucinated" mixed states rather than pure memories.
-
-![Capacity Analysis](results/hopfield/exp2_capacity_results.png)
-
-### 3. Pattern Generation & Visualization
-
-We utilized a custom utility to generate orthogonal bit patterns (e.g., 'Y', 'H', 'E', 'I', 'A') to rigorously test the network's ability to discriminate between distinct memories.
-
-![Pattern Visualization](results/hopfield/test_utils_visual.png)
-
-### Running the Neural Experiment
- 
-
-To reproduce the Hopfield network experiments:
-
-```bash
-# 1. Run Single Pattern Validity Test
-python experiments/experiment_1_single_pattern.py
-
-# 2. Run Capacity Analysis
-python experiments/experiment_2_capacity.py
-
-# 3. View Pattern Utilities
-python experiments/test_utils_visual.py
+```
+Ising Model (Phase 1) ✅
+↓ Replace fixed coupling J with learned weights Wᵢⱼ
+Hopfield Networks (Phase 2) ✅
+↓ Add hidden units and stochasticity
+Boltzmann Machines (Phase 2.5) 🔜
+↓ Stack layers + backpropagation
+Deep Belief Networks
+↓ Take width to infinity
+Neural Network Gaussian Processes (Phase 3) 🔜
+↓ Recognize as free quantum field
+Quantum Field Theory Connection (Phase 4) 🔜
 ```
 
----
+## Progress Tracker
 
-## Interactive Dashboard
+| Phase | Title | Status | Key Result |
+|-------|-------|--------|------------|
+| 1 | 2D Ising Model | ✅ Complete | Tc = 2.2677 (0.05% error vs Onsager exact) |
+| 2 | Hopfield Networks | ✅ Complete | 68% strict recall at 25% corruption; Z₂ symmetry empirically confirmed (201/201 split) |
+| 2.5 | Boltzmann Machines | 🔜 Next | Hidden units + Contrastive Divergence |
+| 3 | Neural Network Gaussian Processes | 🔜 Planned | Finite → infinite width convergence |
+| 4 | Quantum Field Theory Connection | 🔜 Planned | NN ↔ Free quantum field theory |
 
-Explore the physics in real-time with the included Streamlit dashboard:
+## Published Papers
+
+### Phase 1: 2D Ising Model
+
+- **PDF:** [`docs/Computational_2D_Ising_Simulation_Phase1.pdf`](docs/Computational_2D_Ising_Simulation_Phase1.pdf)
+- Validated Tc to 0.05% accuracy against Onsager's exact solution
+- 60 FPS real-time simulation of 65,536 spins
+- Critical exponents within 4.5% of theory
+
+### Phase 2: Hopfield Networks
+
+- **PDF:** [`docs/Hopfield Networks as Learnable Ising Models - Phase 2.pdf`](docs/Hopfield%20Networks%20as%20Learnable%20Ising%20Models%20-%20Phase%202.pdf)
+- **LaTeX source:** [`docs/phase2_project/`](docs/phase2_project/)
+- Demonstrated formal Ising–Hopfield isomorphism
+- Empirically confirmed Z₂ symmetry through 500-trial spurious states analysis
+- 9.65-unit energy gap between stored attractors and spurious states
+
+## Authors
+
+- **Yehia Said Gewily** — Software & Data Engineer, Machine Learning  
+  [yehia@nover.studio](mailto:yehia@nover.studio)
+- **Omar Hosney Mahmoud** (Phase 2 co-author) — Co-founder and CTO, Nover Studio  
+  [omar@nover.studio](mailto:omar@nover.studio)
+
+The five stored memory patterns used in Phase 2 (N, O, V, E, R) spell "NOVER" — the authors' AI-driven media production startup.
+
+## Repository Structure
+
+```
+Physics-AI-Bridge/
+├── docs/                                    # Papers and documentation
+│   ├── Computational_2D_Ising_Simulation_Phase1.pdf
+│   ├── Hopfield Networks as Learnable Ising Models - Phase 2.pdf
+│   ├── Physics_of_AI_Research_Project.pdf  # Original project guide
+│   └── phase2_project/                     # Phase 2 LaTeX project
+│       ├── main.tex                        # LaTeX source
+│       ├── main.pdf                        # Compiled paper
+│       ├── references.bib                  # Bibliography
+│       ├── README.md                       # Build instructions
+│       ├── figures/                        # All 8 paper figures (PNG, 300 DPI)
+│       └── data/                           # Raw experimental data (CSVs)
+├── spin-equilibrium/                       # Phase 1: Interactive dashboard
+│   ├── core/ising_model.py                 # IsingSimulation class
+│   └── viz/                                # Streamlit + Pygame visualizers
+├── ising_simulation/                       # Modular simulation package
+│   ├── ising/                              # Phase 1: Modular Ising components
+│   │   ├── core.py                         # SimulationParams, IsingLattice
+│   │   └── simulation.py                   # MetropolisEngine
+│   └── hopfield/                           # Phase 2: Hopfield Network
+│       ├── core.py                         # HopfieldNetwork class
+│       ├── utils.py                        # Pattern utilities (NOVER letters)
+│       └── visualization.py               # Visualization tools
+├── experiments/                            # Reproducible experiments
+│   ├── # Phase 1 experiments
+│   ├── run_simulation.py                   # Full thermodynamic suite
+│   ├── hysteresis_loop.py                  # Hysteresis analysis
+│   ├── correlation_analysis.py             # Spatial correlations
+│   ├── equilibration_analysis.py           # Equilibration dynamics
+│   ├── fss_run.py / fss_analyze.py         # Finite-size scaling
+│   ├── # Phase 2 experiments
+│   ├── experiment_1_single_pattern.py      # Robustness vs corruption
+│   ├── experiment_2_capacity.py            # Storage capacity
+│   ├── experiment_2b_spurious.py           # Spurious states + Z₂ symmetry
+│   ├── experiment_3_energy_landscape.py    # PCA energy landscape
+│   ├── comparison_ising_hopfield.py        # Isomorphism figure
+│   └── generate_recall_gif.py             # Recall animation
+└── results/
+    ├── ising/                              # Phase 1 figures
+    ├── hopfield/                           # Phase 2 figures, CSVs, GIF
+    └── animations/                         # MP4 + GIF animations
+```
+
+## Quick Start
+
+### Run the Phase 1 Interactive Dashboard
 
 ```bash
 pip install -r spin-equilibrium/requirements.txt
 streamlit run spin-equilibrium/viz/dashboard.py
 ```
 
-**Features:**
+The dashboard lets you adjust temperature, coupling, and external field in real time, and overlays your simulation against the exact Onsager solution.
 
-- **Live Controls**: Adjust Temperature ($T$), Field ($B$), and Coupling ($J$).
-- **Real-time Plotting**: Watch Magnetization and Energy evolve.
-- **Phase Diagram Tracker**: See your current state vs. the Onsager solution.
-
-## Usage
-
-### 1. Run Full Simulation Support
-
-Reproduce all experiments (Thermodynamics, Hysteresis, Scaling):
+### Reproduce Phase 1 Results
 
 ```bash
-python experiments/run_simulation.py
-python experiments/hysteresis_loop.py
-python experiments/fss_run.py
+python experiments/run_simulation.py        # Full thermodynamic suite
+python experiments/hysteresis_loop.py       # Hysteresis loops
+python experiments/fss_run.py               # Finite-size scaling data
+python experiments/fss_analyze.py           # Critical exponents
 ```
 
-### 2. Generate Plots
-
-Create publication-quality figures from collected data:
+### Reproduce Phase 2 Results
 
 ```bash
-python experiments/generate_plots.py
-python experiments/fss_analyze.py
+python experiments/experiment_1_single_pattern.py    # Single pattern robustness
+python experiments/experiment_2_capacity.py           # Storage capacity
+python experiments/experiment_2b_spurious.py          # Spurious states
+python experiments/experiment_3_energy_landscape.py   # Energy landscape
+python experiments/comparison_ising_hopfield.py       # Isomorphism comparison
+python experiments/generate_recall_gif.py             # Recall animation
 ```
 
-### 3. New Package Structure (Refactored)
-
-A clean, installable version of the core logic is provided in `ising_simulation/`.
+### Compile the Phase 2 LaTeX Paper
 
 ```bash
-cd ising_simulation
-pip install -e .
+cd docs/phase2_project
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
 ```
 
-## Repository Structure
+Output: `docs/phase2_project/main.pdf`
 
-- `spin-equilibrium/`: Original source code and modules.
-- `experiments/`: Scripts for running physics experiments.
-- `results/`: Data, Figures, and Animations.
-- `ising_simulation/`: Refactored professional Python package.
+## Key Results
+
+### Phase 1: 2D Ising Model
+
+| Metric | Measured | Theory | Error |
+|--------|----------|--------|-------|
+| Critical temperature Tc | 2.2677 ± 0.001 | 2.269 | 0.05% |
+| Critical exponent γ/ν | 1.672 ± 0.05 | 1.75 | 4.5% |
+| Peak susceptibility | 63.2 at T=2.269 | — | — |
+| Autocorrelation at Tc | ~85 sweeps | — | 160× from T=1.0 |
+
+### Phase 2: Hopfield Networks
+
+| Metric | Value |
+|--------|-------|
+| Strict recall at 25% corruption | 68.0% ± 6.7% |
+| Convergence steps (avg) | 4.4 |
+| Capacity collapse (<50%) | Between P=3 and P=5 |
+| Theoretical capacity (AGS) | 0.138N = 13.8 patterns |
+| Stored vs Inverted convergence | 201/201 (exact Z₂ symmetry) |
+| Energy gap (spurious vs stored) | 9.65 units |
+
+## Inspiration & Acknowledgments
+
+This project was inspired by the YouTube channel **ScienceClic English** and their video "The Physics of A.I." which sketches the conceptual bridge from statistical mechanics to modern AI.
 
 ## License
 
 MIT License.
 
+## Contact
 
+For questions, collaborations, or discussion:
+- Yehia Said Gewily: [yehia@nover.studio](mailto:yehia@nover.studio)
+- Omar Hosney Mahmoud: [omar@nover.studio](mailto:omar@nover.studio)
