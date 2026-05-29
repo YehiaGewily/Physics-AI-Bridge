@@ -7,28 +7,28 @@ A structured research project tracing the mathematical foundation of artificial 
 Inspired by the ScienceClic English video "The Physics of A.I.", this project proves that AI is not "just code" — it is the laws of statistical mechanics in action. We trace a single mathematical thread from 19th-century physics through modern deep learning to quantum field theory.
 
 ```
-Ising Model (Phase 1) ✅
+Ising Model (Phase 1)
 ↓ Replace fixed coupling J with learned weights Wᵢⱼ
-Hopfield Networks (Phase 2) ✅
+Hopfield Networks (Phase 2)
 ↓ Add hidden units and stochasticity
-Boltzmann Machines (Phase 2.5) 🔜
+Boltzmann Machines (Phase 2.5)
 ↓ Stack layers + backpropagation
 Deep Belief Networks
 ↓ Take width to infinity
-Neural Network Gaussian Processes (Phase 3) 🔜
+Neural Network Gaussian Processes (Phase 3)
 ↓ Recognize as free quantum field
-Quantum Field Theory Connection (Phase 4) 🔜
+Quantum Field Theory Connection (Phase 4)
 ```
 
 ## Progress Tracker
 
 | Phase | Title | Status | Key Result |
 |-------|-------|--------|------------|
-| 1 | 2D Ising Model | ✅ Complete | Tc = 2.2677 (0.05% error vs Onsager exact) |
-| 2 | Hopfield Networks | ✅ Complete | 68% strict recall at 25% corruption; Z₂ symmetry empirically confirmed (201/201 split) |
-| 2.5 | Boltzmann Machines | 🔜 Next | Hidden units + Contrastive Divergence |
-| 3 | Neural Network Gaussian Processes | 🔜 Planned | Finite → infinite width convergence |
-| 4 | Quantum Field Theory Connection | 🔜 Planned | NN ↔ Free quantum field theory |
+| 1 | 2D Ising Model | Complete | Tc = 2.2677 (0.05% error vs Onsager exact) |
+| 2 | Hopfield Networks | Complete | 68% strict recall at 25% corruption; Z₂ symmetry empirically confirmed (201/201 split) |
+| 2.5 | Boltzmann Machines | Next | Hidden units + Contrastive Divergence |
+| 3 | Neural Network Gaussian Processes | Planned | Finite → infinite width convergence |
+| 4 | Quantum Field Theory Connection | Planned | NN ↔ Free quantum field theory |
 
 ## Published Papers
 
@@ -184,7 +184,7 @@ Output: `docs/phase2_project/main.pdf`
   ![Hysteresis Loops](results/ising/hysteresis_loops.png)
 
 <details>
-<summary><b>🔍 View Advanced Finite-Size Scaling & Universality Analysis</b></summary>
+<summary><b>View Advanced Finite-Size Scaling & Universality Analysis</b></summary>
 
 - **Peak Susceptibility scaling** (`results/ising/Fig_FSS_Peak_Scaling.png`)
   Log-log plot of peak susceptibility versus lattice size $L$. The power-law fit $\chi_{max} \sim L^{\gamma/\nu}$ yields a critical exponent ratio of $1.672$, matching the exact 2D Ising exponent of $1.75$ within $4.5\%$.
@@ -205,7 +205,7 @@ Output: `docs/phase2_project/main.pdf`
 </details>
 
 <details>
-<summary><b>🔍 View Correlation & Relaxation Dynamics (Critical Slowing Down)</b></summary>
+<summary><b>View Correlation & Relaxation Dynamics (Critical Slowing Down)</b></summary>
 
 - **Spatial Spin-Spin Correlation Decay** (`results/ising/Fig_C_r_Decay.png`)
   The correlation function $G(r)$ as a function of distance $r$ across multiple temperatures, showing the transition from fast exponential decay (disordered phase) to slow power-law decay (near critical temperature $T_c$).
@@ -261,7 +261,7 @@ Output: `docs/phase2_project/main.pdf`
   ![Recall Trajectories](results/hopfield/exp3_recall_trajectories.png)
 
 <details>
-<summary><b>🔍 View Robustness, Storage Capacity, & Spurious Attractors Analysis</b></summary>
+<summary><b>View Robustness, Storage Capacity, & Spurious Attractors Analysis</b></summary>
 
 - **Corruption Robustness Metrics** (`results/hopfield/exp1_single_pattern_results.png`)
   Recall success rate and mean convergence steps vs. noise corruption level. The network maintains perfect recall up to 20% noise and completes in under 5 sweeps.
