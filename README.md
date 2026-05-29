@@ -156,22 +156,73 @@ Output: `docs/phase2_project/main.pdf`
 | Peak susceptibility | 63.2 at T=2.269 | — | — |
 | Autocorrelation at Tc | ~85 sweeps | — | 160× from T=1.0 |
 
-#### Phase 1 Visualizations
+#### Phase 1 Core Visualizations
+
+- **Lattice Real-Time Simulation** (`results/animations/ising_evolution.gif`)
+  Full Metropolis-Hastings evolution animation showing domain formation, critical fluctuations near $T_c$, and relaxation to ferromagnetic order on a $256 \times 256$ grid.
+  
+  ![Lattice Real-Time Simulation](results/animations/ising_evolution.gif)
+
+- **Lattice Spin Evolution (Static Snapshots)** (`results/ising/lattice_evolution.png`)
+  Displays grid configurations at different temperatures, illustrating the transition from high-temperature disorder to low-temperature ferromagnetic order.
+  
+  ![Lattice Evolution](results/ising/lattice_evolution.png)
 
 - **Thermodynamic Transition Overview** (`results/ising/Fig1_Transition_Overview.png`)
   Plots the order parameters and response functions against temperature, illustrating the diverging susceptibility ($\chi$) and specific heat ($C_v$) peaks at $T_c \approx 2.269$.
   
   ![Thermodynamic Transition Overview](results/ising/Fig1_Transition_Overview.png)
 
-- **Lattice Spin Evolution** (`results/ising/lattice_evolution.png`)
-  Displays grid configurations at different temperatures, illustrating the transition from high-temperature disorder to low-temperature ferromagnetic order.
+- **Critical Divergence near $T_c$** (`results/ising/Fig2_Critical_Detail.png`)
+  Detailed view of the specific heat and magnetic susceptibility in the critical region $T \in [2.0, 2.5]$, showing peak alignment with the Onsager exact critical temperature (dashed line).
   
-  ![Lattice Evolution](results/ising/lattice_evolution.png)
+  ![Critical Divergence near Tc](results/ising/Fig2_Critical_Detail.png)
 
 - **Magnetic Hysteresis Loops** (`results/ising/hysteresis_loops.png`)
-  Demonstrates magnetic memory retention under cycles of external field $B$ across different temperatures.
+  Demonstrates magnetic memory retention under cycles of external field $B$ across different temperatures, showing coercivity collapse as temperature increases.
   
   ![Hysteresis Loops](results/ising/hysteresis_loops.png)
+
+<details>
+<summary><b>🔍 View Advanced Finite-Size Scaling & Universality Analysis</b></summary>
+
+- **Peak Susceptibility scaling** (`results/ising/Fig_FSS_Peak_Scaling.png`)
+  Log-log plot of peak susceptibility versus lattice size $L$. The power-law fit $\chi_{max} \sim L^{\gamma/\nu}$ yields a critical exponent ratio of $1.672$, matching the exact 2D Ising exponent of $1.75$ within $4.5\%$.
+  
+  ![Peak Susceptibility Scaling](results/ising/Fig_FSS_Peak_Scaling.png)
+
+- **Critical Temperature Extrapolation** (`results/ising/Fig_FSS_Tc_Scaling.png`)
+  Pseudo-critical temperatures $T_{\chi}(L)$ plotted against inverse lattice size $1/L$. Linear extrapolation to the thermodynamic limit ($1/L \to 0$) yields $T_c(\infty) = 2.2677 \pm 0.002$ (0.05% error).
+  
+  ![Critical Temperature Extrapolation](results/ising/Fig_FSS_Tc_Scaling.png)
+
+- **Scaling Collapse master curves** (`results/ising/Fig_FSS_Chi_Collapse.png` & `results/ising/Fig_FSS_M_Collapse.png`)
+  Scaling collapse of susceptibility ($\chi L^{-\gamma/\nu}$) and magnetization ($|M| L^{\beta/\nu}$) against scaled reduced temperature $t L^{1/\nu}$ for different grid sizes. The collapse onto single master curves validates the scaling hypothesis and confirms the simulated system's universality class.
+  
+  ![Susceptibility Scaling Collapse](results/ising/Fig_FSS_Chi_Collapse.png)
+  ![Magnetization Scaling Collapse](results/ising/Fig_FSS_M_Collapse.png)
+
+</details>
+
+<details>
+<summary><b>🔍 View Correlation & Relaxation Dynamics (Critical Slowing Down)</b></summary>
+
+- **Spatial Spin-Spin Correlation Decay** (`results/ising/Fig_C_r_Decay.png`)
+  The correlation function $G(r)$ as a function of distance $r$ across multiple temperatures, showing the transition from fast exponential decay (disordered phase) to slow power-law decay (near critical temperature $T_c$).
+  
+  ![Spatial Correlation Decay](results/ising/Fig_C_r_Decay.png)
+
+- **Thermal Equilibration Curves** (`results/ising/Fig_Equilibration_Curves.png`)
+  Magnetization and energy time evolution starting from ordered (cold) vs. disordered (hot) configurations, illustrating the severe divergence in convergence times near the critical point.
+  
+  ![Thermal Equilibration Curves](results/ising/Fig_Equilibration_Curves.png)
+
+- **Autocorrelation & Relaxation Times** (`results/ising/Fig_Autocorrelation_Functions.png`)
+  (Top) Magnetization autocorrelation function $A(t)$ vs. sweep lag. (Bottom) Integrated relaxation time $\tau$ peaking sharply at $T_c$, validating critical slowing down.
+  
+  ![Autocorrelation & Relaxation Times](results/ising/Fig_Autocorrelation_Functions.png)
+
+</details>
 
 ---
 
@@ -186,7 +237,7 @@ Output: `docs/phase2_project/main.pdf`
 | Stored vs Inverted convergence | 201/201 (exact Z₂ symmetry) |
 | Energy gap (spurious vs stored) | 9.65 units |
 
-#### Phase 2 Visualizations
+#### Phase 2 Core Visualizations
 
 - **Ising–Hopfield Isomorphism** (`results/hopfield/comparison_ising_hopfield.png`)
   A side-by-side dynamical comparison showing how the Ising relaxation (top) and Hopfield error correction (bottom) both minimize quadratic spin Hamiltonian systems to achieve stable attractors.
@@ -198,11 +249,36 @@ Output: `docs/phase2_project/main.pdf`
   
   ![Memory Recall Animation](results/hopfield/recall_animation.gif)
 
+- **Stored Memory Templates** (`results/hopfield/letter_patterns_verified.png`)
+  Visualizes the five $10 \times 10$ binary letter patterns (N, O, V, E, R) used as training memories, spelling out the authors' startup "NOVER".
+  
+  ![Stored Memory Templates](results/hopfield/letter_patterns_verified.png)
+
 - **PCA Energy Landscape & Recall Trajectories** (`results/hopfield/exp3_energy_landscape.png` & `results/hopfield/exp3_recall_trajectories.png`)
   Left: 2D PCA projection of the 100-dimensional state space showing a ~49 unit energy gap between the disordered state cloud and the stored attractors. Right: 10 random initial states successfully tracing energy descent paths to the stored/inverted basins.
   
   ![PCA Energy Landscape](results/hopfield/exp3_energy_landscape.png)
   ![Recall Trajectories](results/hopfield/exp3_recall_trajectories.png)
+
+<details>
+<summary><b>🔍 View Robustness, Storage Capacity, & Spurious Attractors Analysis</b></summary>
+
+- **Corruption Robustness Metrics** (`results/hopfield/exp1_single_pattern_results.png`)
+  Recall success rate and mean convergence steps vs. noise corruption level. The network maintains perfect recall up to 20% noise and completes in under 5 sweeps.
+  
+  ![Corruption Robustness Metrics](results/hopfield/exp1_single_pattern_results.png)
+
+- **Storage Capacity Limits** (`results/hopfield/exp2_capacity_results.png`)
+  Recall accuracy as a function of the number of stored patterns $P$. Capacity degrades before the theoretical limit $0.138N$ due to cross-correlation among letter patterns (detailed in the inset correlation matrix).
+  
+  ![Storage Capacity Limits](results/hopfield/exp2_capacity_results.png)
+
+- **Spurious Attractors & Energy Distribution** (`results/hopfield/exp2b_spurious_states.png`)
+  Detailed analysis of 500 random initializations, classifying terminal states (stored, inverted, mixture, and unknown), graphing the energy gap between stored and spurious states, and presenting stable spurious mixture configurations.
+  
+  ![Spurious Attractors](results/hopfield/exp2b_spurious_states.png)
+
+</details>
 
 ## Inspiration & Acknowledgments
 
