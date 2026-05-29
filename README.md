@@ -145,7 +145,7 @@ pdflatex main.tex
 
 Output: `docs/phase2_project/main.pdf`
 
-## Key Results
+## Key Results & Visualizations
 
 ### Phase 1: 2D Ising Model
 
@@ -155,6 +155,25 @@ Output: `docs/phase2_project/main.pdf`
 | Critical exponent γ/ν | 1.672 ± 0.05 | 1.75 | 4.5% |
 | Peak susceptibility | 63.2 at T=2.269 | — | — |
 | Autocorrelation at Tc | ~85 sweeps | — | 160× from T=1.0 |
+
+#### Phase 1 Visualizations
+
+- **Thermodynamic Transition Overview** (`results/ising/Fig1_Transition_Overview.png`)
+  Plots the order parameters and response functions against temperature, illustrating the diverging susceptibility ($\chi$) and specific heat ($C_v$) peaks at $T_c \approx 2.269$.
+  
+  ![Thermodynamic Transition Overview](results/ising/Fig1_Transition_Overview.png)
+
+- **Lattice Spin Evolution** (`results/ising/lattice_evolution.png`)
+  Displays grid configurations at different temperatures, illustrating the transition from high-temperature disorder to low-temperature ferromagnetic order.
+  
+  ![Lattice Evolution](results/ising/lattice_evolution.png)
+
+- **Magnetic Hysteresis Loops** (`results/ising/hysteresis_loops.png`)
+  Demonstrates magnetic memory retention under cycles of external field $B$ across different temperatures.
+  
+  ![Hysteresis Loops](results/ising/hysteresis_loops.png)
+
+---
 
 ### Phase 2: Hopfield Networks
 
@@ -166,6 +185,24 @@ Output: `docs/phase2_project/main.pdf`
 | Theoretical capacity (AGS) | 0.138N = 13.8 patterns |
 | Stored vs Inverted convergence | 201/201 (exact Z₂ symmetry) |
 | Energy gap (spurious vs stored) | 9.65 units |
+
+#### Phase 2 Visualizations
+
+- **Ising–Hopfield Isomorphism** (`results/hopfield/comparison_ising_hopfield.png`)
+  A side-by-side dynamical comparison showing how the Ising relaxation (top) and Hopfield error correction (bottom) both minimize quadratic spin Hamiltonian systems to achieve stable attractors.
+  
+  ![Ising-Hopfield Isomorphism](results/hopfield/comparison_ising_hopfield.png)
+
+- **Associative Memory Recall** (`results/hopfield/recall_animation.gif`)
+  An animation showing the step-by-step asynchronous energy descent correcting 25% random corruption in the stored patterns.
+  
+  ![Memory Recall Animation](results/hopfield/recall_animation.gif)
+
+- **PCA Energy Landscape & Recall Trajectories** (`results/hopfield/exp3_energy_landscape.png` & `results/hopfield/exp3_recall_trajectories.png`)
+  Left: 2D PCA projection of the 100-dimensional state space showing a ~49 unit energy gap between the disordered state cloud and the stored attractors. Right: 10 random initial states successfully tracing energy descent paths to the stored/inverted basins.
+  
+  ![PCA Energy Landscape](results/hopfield/exp3_energy_landscape.png)
+  ![Recall Trajectories](results/hopfield/exp3_recall_trajectories.png)
 
 ## Inspiration & Acknowledgments
 
