@@ -5,79 +5,91 @@ from typing import Dict
 def create_letter_pattern(letter: str, size: int = 10) -> np.ndarray:
     """
     Creates a binary pattern (+1/-1) for a specific letter.
-    Currently supports 'Y', 'E', 'H', 'I', 'A' on a 10x10 grid.
+    Currently supports 'N', 'O', 'V', 'E', 'R' on a 10x10 grid.
     
     Args:
         letter (str): The character to generate.
-        size (int): Grid size (width=height). Defaults to 10.
+        size (int): Grid size (width=height). Must be 10. Defaults to 10.
         
     Returns:
-        np.ndarray: Flattened 1D array of size (size*size) with values {+1, -1}.
+        np.ndarray: Flattened 1D array of shape (100,) with dtype=np.int8
+                     and values in {-1, +1}.
     """
     letter = letter.upper()
     
-    # Initialize background as -1
-    grid = np.full((size, size), -1, dtype=int)
+    if size != 10:
+        raise ValueError(f"Letter patterns are designed for size=10 only. Got size={size}.")
     
-    # Helper to clean up coordinate definitions
-    # Coordinates are (row, col)
-    # 10x10 grid -> indices 0..9
+    patterns: Dict[str, list] = {
+        'N': [
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,+1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,+1,+1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,+1,+1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,+1,+1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,+1,+1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,+1,+1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,+1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+        ],
+        'O': [
+            [-1,-1,+1,+1,+1,+1,+1,+1,-1,-1],
+            [-1,+1,+1,+1,+1,+1,+1,+1,+1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [-1,+1,+1,+1,+1,+1,+1,+1,+1,-1],
+            [-1,-1,+1,+1,+1,+1,+1,+1,-1,-1],
+        ],
+        'V': [
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [-1,+1,+1,-1,-1,-1,-1,+1,+1,-1],
+            [-1,+1,+1,-1,-1,-1,-1,+1,+1,-1],
+            [-1,-1,+1,+1,-1,-1,+1,+1,-1,-1],
+            [-1,-1,+1,+1,-1,-1,+1,+1,-1,-1],
+            [-1,-1,-1,+1,+1,+1,+1,-1,-1,-1],
+            [-1,-1,-1,+1,+1,+1,+1,-1,-1,-1],
+            [-1,-1,-1,-1,+1,+1,-1,-1,-1,-1],
+        ],
+        'E': [
+            [+1,+1,+1,+1,+1,+1,+1,+1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [+1,+1,+1,+1,+1,+1,-1,-1,-1,-1],
+            [+1,+1,+1,+1,+1,+1,-1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [+1,+1,+1,+1,+1,+1,+1,+1,-1,-1],
+        ],
+        'R': [
+            [+1,+1,+1,+1,+1,+1,+1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,+1,+1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,-1,+1,+1],
+            [+1,+1,-1,-1,-1,-1,-1,+1,+1,-1],
+            [+1,+1,+1,+1,+1,+1,+1,-1,-1,-1],
+            [+1,+1,-1,-1,+1,+1,-1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,+1,+1,-1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,+1,+1,-1,-1],
+            [+1,+1,-1,-1,-1,-1,-1,+1,+1,-1],
+        ],
+    }
     
-    if letter == 'Y':
-        # Y shape
-        # Top-left arm
-        for i in range(5):
-            grid[i, i] = 1
-        # Top-right arm
-        for i in range(5):
-            grid[i, size - 1 - i] = 1
-        # Stem
-        for i in range(5, size):
-            grid[i, size // 2] = 1
-            if size % 2 == 0: # make stem thicker for even sizes
-                grid[i, size // 2 - 1] = 1
-                
-    elif letter == 'E':
-        # Left bar
-        grid[:, 1:3] = 1
-        # Top bar
-        grid[0:2, 1:] = 1
-        # Middle bar
-        grid[size//2 - 1 : size//2 + 1, 1:] = 1
-        # Bottom bar
-        grid[-2:, 1:] = 1
-        
-    elif letter == 'H':
-        # Left bar
-        grid[:, 1:3] = 1
-        # Right bar
-        grid[:, -3:-1] = 1
-        # Middle bar
-        grid[size//2 - 1 : size//2 + 1, :] = 1
-        
-    elif letter == 'I':
-        # Top bar
-        grid[0:2, :] = 1
-        # Bottom bar
-        grid[-2:, :] = 1
-        # Stem
-        center = size // 2
-        grid[:, center-1:center+1] = 1
-        
-    elif letter == 'A':
-        # Left diagonalish - simplified to straight lines for low res
-        # Left Side
-        grid[1:, 1:3] = 1
-        # Right Side
-        grid[1:, -3:-1] = 1
-        # Top
-        grid[0:2, 1:-1] = 1
-        # Middle
-        grid[size//2 - 1 : size//2 + 1, 1:-1] = 1
-        
-    else:
-        raise ValueError(f"Letter '{letter}' not implemented. Supported: Y, E, H, I, A")
-        
+    if letter not in patterns:
+        raise ValueError(
+            f"Letter '{letter}' not implemented. "
+            f"Supported: {', '.join(sorted(patterns.keys()))}"
+        )
+    
+    grid = np.array(patterns[letter], dtype=np.int8)
     return grid.flatten()
 
 def corrupt_pattern(pattern: np.ndarray, corruption_rate: float) -> np.ndarray:
