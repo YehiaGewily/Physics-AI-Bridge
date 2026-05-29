@@ -12,3 +12,14 @@ results/animations/*.mp4
 .qoder/
 
 docs/Physics_of_AI_Research_Project.pdf
+md-docs-for-me/
+docs/phase2_project/*.aux
+docs/phase2_project/*.bbl
+docs/phase2_project/*.blg
+docs/phase2_project/*.fdb_latexmk
+docs/phase2_project/*.fls
+docs/phase2_project/*.log
+docs/phase2_project/*.out
+docs/phase2_project/*.synctex.gz
+docs/phase2_project/main.pdf
+docs/Physics_of_AI_Research_Project.pdf
